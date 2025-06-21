@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br" className="dark">
       <body
         className={`${montserratSans.variable} ${geistMono.variable} antialiased`}
       >
