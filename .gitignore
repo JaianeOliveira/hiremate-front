@@ -12,6 +12,9 @@
 
 # testing
 /coverage
+/coverage/*
+*.lcov
+
 
 # next.js
 /.next/
