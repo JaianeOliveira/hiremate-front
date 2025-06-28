@@ -1,4 +1,4 @@
-import { pages } from "@/app/utils/pages";
+import { pages } from "@/utils/pages";
 import Link from "next/link";
 
 export default function ErrorPage() {

@@ -1,12 +1,19 @@
+import { LoggoutButton } from "@/components/loggout-button.stateful";
+import { pages } from "@/utils/pages";
+import { getServerSession } from "next-auth";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
-import { LoggoutButton } from "../components/loggout-button.stateful";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import console from "console";
 
 export default async function layout(props: PropsWithChildren) {
-  const session = {};
+  const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect("/login");
+  console.log(session);
+
+  if (!session?.user) {
+    redirect(pages.login);
   }
 
   return (
@@ -14,16 +21,16 @@ export default async function layout(props: PropsWithChildren) {
       <header className="flex items-center justify-between gap-4 p-4">
         <div className="flex items-center gap-2">
           <h1>Hiremate</h1>
-          {/* <p className="text-sm">Olá, {session?.user.name}!</p> */}
+          <p className="text-sm">Olá, {session?.user.name}!</p>
         </div>
         <div className="flex items-center gap-2 justify-end">
-          {/* <Image
+          <Image
             height={24}
             width={24}
             alt={session?.user.name!}
             src={session?.user.image!}
             className="rounded-full"
-          /> */}
+          />
           <LoggoutButton />
         </div>
       </header>
