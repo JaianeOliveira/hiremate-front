@@ -1,3 +1,13 @@
+import { createSessionService } from "@/services/auth/create-session";
+import { createUserService } from "@/services/auth/create-user";
+import { deleteSessionService } from "@/services/auth/delete-session";
+import { deleteUserService } from "@/services/auth/delete-user";
+import { getSessionAndUserService } from "@/services/auth/get-session-and-user";
+import { getUserService } from "@/services/auth/get-user";
+import { getUserByAccountService } from "@/services/auth/get-user-by-account";
+import { linkingAccountService } from "@/services/auth/linking-account";
+import { updateSessionService } from "@/services/auth/update-session";
+import { updateUserService } from "@/services/auth/update-user";
 import {
   Adapter,
   AdapterAccount,
@@ -13,94 +23,125 @@ const verificationTokens: VerificationToken[] = [];
 
 export default function MyAdapter(): Adapter {
   return {
-    async createUser(user: AdapterUser): Promise<AdapterUser> {
-      users.push(user);
-
-      return user;
+    async createUser(user: AdapterUser) {
+      const { data } = await createUserService(user);
+      return data;
     },
     async getUser(id: string): Promise<AdapterUser | null> {
-      const user = users.find((u) => u.id === id);
-
-      return user || null;
+      try {
+        const { data } = await getUserService({ id });
+        return data;
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
-    async getUserByAccount({ providerAccountId }): Promise<AdapterUser | null> {
-      const account = accounts.find(
-        (a) => a.providerAccountId === providerAccountId
-      );
 
-      const user = users.find((u) => u.id === account?.userId);
-
-      return user || null;
+    async getUserByAccount({
+      provider,
+      providerAccountId,
+    }): Promise<AdapterUser | null> {
+      try {
+        const { data } = await getUserByAccountService({
+          provider,
+          providerAccountId,
+        });
+        return data;
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
+
     async getUserByEmail(email: string): Promise<AdapterUser | null> {
-      const user = users.find((u) => u.email === email);
-
-      return user || null;
+      try {
+        const { data } = await getUserService({ email });
+        return data;
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
 
     async deleteUser(userId: string) {
-      const userIndex = users.findIndex((u) => u.id === userId);
-      users.splice(userIndex, 1);
+      await deleteUserService(userId);
     },
-    async updateUser(user): Promise<AdapterUser> {
-      const userIndex = users.findIndex((u) => u.id === user.id);
-      const oldUser = users[userIndex];
-      const newUser = {
-        ...oldUser,
-        ...user,
-      };
 
-      users[userIndex] = newUser;
+    async updateUser(user: Partial<AdapterUser> & Pick<AdapterUser, "id">) {
+      try {
+        const { data } = await updateUserService({
+          id: user.id,
+          data: user,
+        });
 
-      return newUser || undefined;
+        return data;
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
 
     async linkAccount(account: AdapterAccount) {
-      accounts.push(account);
+      try {
+        const { data } = await linkingAccountService({ data: account });
+        return data;
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
 
-    async createSession(session: AdapterSession): Promise<AdapterSession> {
-      sessions.push(session);
-
-      return session;
+    async createSession(session: AdapterSession) {
+      try {
+        const { data } = await createSessionService({
+          data: session,
+        });
+        return { ...data, expires: new Date(data.expires) };
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
 
     async getSessionAndUser(
       sessionToken: string
     ): Promise<{ user: AdapterUser; session: AdapterSession } | null> {
-      const session = sessions.find((s) => s.sessionToken === sessionToken);
-      const user = users.find((u) => u.id === session?.userId);
-
-      if (!session || !user) return null;
-
-      return {
-        session,
-        user,
-      };
+      try {
+        const { data } = await getSessionAndUserService({ sessionToken });
+        return {
+          ...data,
+          session: { ...data.session, expires: new Date(data.session.expires) },
+        };
+      } catch (err: any) {
+        if (err.response?.status === 404) {
+          return null;
+        }
+        throw err;
+      }
     },
 
     async updateSession(
       session: Partial<AdapterSession> & Pick<AdapterSession, "sessionToken">
     ): Promise<undefined | null | AdapterSession> {
-      const oldSessionIndex = sessions.findIndex(
-        (s) => s.sessionToken === session.sessionToken
-      );
-      const oldSession = sessions[oldSessionIndex];
-      const newSession = {
-        ...oldSession,
-        ...session,
-      };
-      sessions[oldSessionIndex] = newSession;
-
-      return newSession;
+      try {
+        const { data } = await updateSessionService({
+          sessionToken: session.sessionToken,
+          data: session,
+        });
+        return { ...data, expires: new Date(data.expires) };
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
 
     async deleteSession(sessionToken: string) {
-      const sessionIndex = sessions.findIndex(
-        (s) => s.sessionToken === sessionToken
-      );
-
-      sessions.splice(sessionIndex, 1);
+      try {
+        await deleteSessionService({ sessionToken });
+      } catch (err: any) {
+        if (err.response?.status === 404) return null;
+        throw err;
+      }
     },
   };
 }
