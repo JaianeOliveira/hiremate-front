@@ -1,4 +1,4 @@
-import { api } from "@/lib/axios";
+import { publicApi } from "@/lib/axios";
 
 interface GetUserServiceRequest {
   id?: string;
@@ -23,7 +23,7 @@ export const getUserService = async (params: GetUserServiceRequest) => {
   }
   const url = `/users/?${queryParams.toString()}`;
 
-  return await api({
+  return await publicApi({
     method: "GET",
     url,
   });

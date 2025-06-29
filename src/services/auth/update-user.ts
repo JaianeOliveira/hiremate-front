@@ -1,4 +1,4 @@
-import { api } from "@/lib/axios";
+import { publicApi } from "@/lib/axios";
 import { AdapterUser } from "next-auth/adapters";
 
 interface UpdateUserRequest {
@@ -7,7 +7,7 @@ interface UpdateUserRequest {
 }
 
 export const updateUserService = async ({ id, data }: UpdateUserRequest) => {
-  return await api({
+  return await publicApi({
     method: "PATCH",
     url: `/users/${id}`,
     data,

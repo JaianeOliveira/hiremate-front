@@ -3,6 +3,17 @@ import { pages } from "@/utils/pages";
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      accessToken?: string;
+    };
+  }
+}
+
 export const authOptions: AuthOptions = {
   adapter: MyAdapter(),
   providers: [
@@ -12,9 +23,8 @@ export const authOptions: AuthOptions = {
     }),
   ],
   session: {
-    strategy: "database",
-    maxAge: 30 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 1 day
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
@@ -22,32 +32,44 @@ export const authOptions: AuthOptions = {
     error: pages.login_error,
     signOut: pages.home,
   },
-  debug: true,
-  logger: {
-    error(code, metadata) {
-      console.error("🔴 NextAuth error:", code, metadata);
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      return token;
     },
-    warn(code) {
-      console.warn("🟠 NextAuth warn:", code);
-    },
-    debug(code, metadata) {
-      console.debug("🔵 NextAuth debug:", code, metadata);
-    },
-  },
-  events: {
-    async createUser(message) {
-      console.log("📅 event createUser:", message);
-    },
-    async linkAccount(message) {
-      console.log("📅 event linkAccount:", message);
-    },
-    async signIn(message) {
-      console.log("📅 event signIn:", message);
-    },
-    async session(message) {
-      console.log("📅 event session:", message);
+    async session({ session, token }) {
+      session.user.accessToken = token.accessToken as string;
+      return session;
     },
   },
+  debug: false,
+  // logger: {
+  //   error(code, metadata) {
+  //     console.error("🔴 NextAuth error:", code, metadata);
+  //   },
+  //   warn(code) {
+  //     console.warn("🟠 NextAuth warn:", code);
+  //   },
+  //   debug(code, metadata) {
+  //     console.debug("🔵 NextAuth debug:", code, metadata);
+  //   },
+  // },
+  // events: {
+  //   async createUser(message) {
+  //     console.log("📅 event createUser:", message);
+  //   },
+  //   async linkAccount(message) {
+  //     console.log("📅 event linkAccount:", message);
+  //   },
+  //   async signIn(message) {
+  //     console.log("📅 event signIn:", message);
+  //   },
+  //   async session(message) {
+  //     console.log("📅 event session:", message);
+  //   },
+  // },
 };
 
 const handler = NextAuth(authOptions);

@@ -1,7 +1,7 @@
-import { api } from "@/lib/axios";
+import { publicApi } from "@/lib/axios";
 
 export const deleteUserService = async (id: string) => {
-  return await api({
+  return await publicApi({
     method: "DELETE",
     url: `/users/${id}`,
   });

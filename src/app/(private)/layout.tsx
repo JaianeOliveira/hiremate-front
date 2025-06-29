@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { pages } from "@/utils/pages";
-import console from "console";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -18,8 +17,6 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function layout(props: PropsWithChildren) {
   const session = await getServerSession(authOptions);
-
-  console.log(session);
 
   if (!session?.user) {
     redirect(pages.login);
