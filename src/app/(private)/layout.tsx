@@ -1,4 +1,13 @@
+import { LoggoutButton } from "@/components/loggout-button.stateful";
 import { ToggleDarkModeButtonStateful } from "@/components/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { pages } from "@/utils/pages";
 import console from "console";
 import { getServerSession } from "next-auth";
@@ -21,13 +30,24 @@ export default async function layout(props: PropsWithChildren) {
       <header className="flex items-center justify-between gap-4 py-4 px-[8vw] shadow-xs">
         <h1 className="uppercase font-semibold text-blue-500 ">Hiremate</h1>
         <div className="flex items-center gap-2 justify-end">
-          <Image
-            height={24}
-            width={24}
-            alt={session?.user.name!}
-            src={session?.user.image!}
-            className="rounded-full"
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Image
+                height={24}
+                width={24}
+                alt={session?.user.name!}
+                src={session?.user.image!}
+                className="rounded-full"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="md:w-56">
+              <DropdownMenuLabel>Olá, {session?.user.name}!</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LoggoutButton />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
       <main className="overflow-auto">{props.children}</main>
