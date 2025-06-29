@@ -2,12 +2,12 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    --background: oklch(92.9% 0.013 255.508);
+    --foreground: oklch(12.9% 0.042 264.695);
   }
   .dark {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: oklch(12.9% 0.042 264.695);
+    --foreground: oklch(92.9% 0.013 255.508);
   }
 }
 

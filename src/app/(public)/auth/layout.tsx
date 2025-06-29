@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { ToggleDarkModeButtonStateful } from "@/components/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
 import { pages } from "@/utils/pages";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -11,5 +12,10 @@ export default async function Layout({ children }: PropsWithChildren) {
     redirect(pages.applications);
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <ToggleDarkModeButtonStateful />
+    </>
+  );
 }
