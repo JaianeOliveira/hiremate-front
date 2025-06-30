@@ -1,19 +1,17 @@
-"use client";
-
 import { pages } from "@/utils/pages";
-import { MonitorX } from "lucide-react";
+import { Binoculars } from "lucide-react";
 import Link from "next/link";
 
-export default function ErrorPage() {
+export default function NotFoudPage() {
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen">
-      <MonitorX
+      <Binoculars
         strokeWidth={1.5}
         size={32}
         className="stroke-blue-500 dark:stroke-blue-300"
       />
       <p className="font-semibold text-blue-500 dark:text-blue-300">
-        Algo deu errado
+        Ops, parece que essa página não existe.
       </p>
       <Link
         href={pages.applications}

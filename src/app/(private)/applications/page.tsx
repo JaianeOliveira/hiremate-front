@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   Table,
   TableBody,
@@ -13,6 +14,8 @@ import { useEffect, useState } from "react";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
+
+  const { open } = useSidebar();
 
   const handleFetchApplications = async () => {
     try {
@@ -28,7 +31,11 @@ export default function ApplicationsPage() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 py-8 px-[8vw]">
+    <div
+      className={`flex flex-col gap-8 ${
+        open ? "p-4" : "py-4 px-[4vw]"
+      } transition-all`}
+    >
       <div className="flex gap-4 items-center justify-between">
         <h2 className="text-slate-700">Acompanhamento de candidaturas</h2>
 

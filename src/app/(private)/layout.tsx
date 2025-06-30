@@ -1,23 +1,24 @@
+import { GlobalHeader } from "@/components/general/global-header";
 import { GlobalSidebar } from "@/components/general/global-sidebar";
-import { LoggoutButton } from "@/components/general/loggout-button.stateful";
-import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
+import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { pages } from "@/utils/pages";
+import { Bell } from "lucide-react";
 import { getServerSession } from "next-auth";
-import Image from "next/image";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function layout(props: PropsWithChildren) {
+  const cookieStore = await cookies();
+  const sidebarIsOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
@@ -26,39 +27,26 @@ export default async function layout(props: PropsWithChildren) {
 
   return (
     <div className="flex flex-col max-h-screen max-w-screen ">
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={sidebarIsOpen}>
         <GlobalSidebar />
 
         <main className="relative overflow-auto w-full ">
-          <SidebarTrigger className=" absolute top-10 left-10 " />
-          <header className="flex items-center justify-between gap-4 py-4 px-[8vw] shadow-xs">
-            <h1 className="uppercase font-semibold text-blue-500 ">Hiremate</h1>
-            <div className="flex items-center gap-2 justify-end">
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Image
-                    height={24}
-                    width={24}
-                    alt={session?.user.name!}
-                    src={session?.user.image!}
-                    className="rounded-full"
-                  />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="md:w-56">
-                  <DropdownMenuLabel>
-                    Olá, {session?.user.name}!
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <LoggoutButton />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </header>
+          <GlobalHeader>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost">
+                  <Bell className="stroke-blue-500" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" side="bottom">
+                <p className="text-slate-400 dark:text-slate-500 text-xs italic text-center">
+                  Você não tem nenhuma notificação!
+                </p>
+              </PopoverContent>
+            </Popover>
+          </GlobalHeader>
           {props.children}
         </main>
-        <ToggleDarkModeButtonStateful />
       </SidebarProvider>
     </div>
   );

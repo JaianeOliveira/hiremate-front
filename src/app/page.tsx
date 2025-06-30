@@ -1,4 +1,3 @@
-import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
 import { pages } from "@/utils/pages";
 import Link from "next/link";
 
@@ -40,7 +39,6 @@ export default function Home() {
           GitHub
         </Link>
       </footer>
-      <ToggleDarkModeButtonStateful />
     </div>
   );
 }
