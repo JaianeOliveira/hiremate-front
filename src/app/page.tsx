@@ -5,7 +5,9 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="shadow-lg flex items-center justify-between gap-4 py-4 px-[8vw]">
-        <h1 className="uppercase font-semibold text-blue-500 ">Hiremate</h1>
+        <h1 className="text-lg uppercase font-semibold text-blue-500 ">
+          Hiremate
+        </h1>
 
         <Link
           href={pages.login}

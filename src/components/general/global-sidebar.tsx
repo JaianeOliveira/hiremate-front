@@ -70,7 +70,7 @@ export async function GlobalSidebar() {
                       className="text-slate-700 stroke-slate-700 dark:text-slate-300 dark:stroke-slate-300"
                     >
                       <item.icon />
-                      <span className="text-xs font-medium">{item.title}</span>
+                      <span className="text-sm font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -91,7 +91,7 @@ export async function GlobalSidebar() {
                     className="text-slate-700 stroke-slate-700 dark:text-slate-300 dark:stroke-slate-300"
                   >
                     <FileText strokeWidth={1.5} />
-                    <span className="text-xs font-medium">
+                    <span className="text-sm font-medium">
                       Otimizar currículo
                     </span>
                   </Link>

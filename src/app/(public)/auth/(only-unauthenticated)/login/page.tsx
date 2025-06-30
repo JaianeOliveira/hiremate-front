@@ -4,8 +4,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col gap-4 items-center justify-center dark:bg-slate-950">
       <div className="flex flex-col items-center text-center">
-        <h1 className="uppercase font-semibold text-blue-500">HireMate</h1>
-        <p className="text-xs text-slate-600 dark:text-slate-200">
+        <h1 className="uppercase font-semibold text-blue-500 text-lg">
+          HireMate
+        </h1>
+        <p className="text-sm text-slate-600 dark:text-slate-200">
           Entre com alguma rede social{" "}
         </p>
       </div>

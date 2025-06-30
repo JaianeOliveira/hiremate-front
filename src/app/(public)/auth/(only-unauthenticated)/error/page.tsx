@@ -11,7 +11,7 @@ export default function ErrorPage() {
         className="stroke-blue-500 dark:stroke-blue-300"
       />
 
-      <p className="font-semibold text-blue-500 dark:text-blue-300">
+      <p className="text-lg font-semibold text-blue-500 dark:text-blue-300">
         Não foi possivel te autenticar!
       </p>
       <Link
