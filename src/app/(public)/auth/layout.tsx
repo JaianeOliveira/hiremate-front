@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { ToggleDarkModeButtonStateful } from "@/components/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
+import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
 import { pages } from "@/utils/pages";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
