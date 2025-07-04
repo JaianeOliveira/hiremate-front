@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { authOptions } from "@/lib/auth";
 import { pages } from "@/utils/pages";
 import {
   DropdownMenuLabel,

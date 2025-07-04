@@ -7,13 +7,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { authOptions } from "@/lib/auth";
 import { pages } from "@/utils/pages";
 import { Bell } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function layout(props: PropsWithChildren) {
   const cookieStore = await cookies();
