@@ -12,7 +12,7 @@ export const LoggoutButton = forwardRef<HTMLButtonElement, Props>(
       className={`
         w-full 
         flex items-center justify-between gap-4 
-        text-xs text-slate-700 dark:text-slate-300
+        text-xs text-neutral-700 dark:text-neutral-300
         ${className || ""}  
       `}
       onClick={() => signOut({ callbackUrl: pages.home, redirect: true })}

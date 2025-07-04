@@ -51,7 +51,7 @@ export async function GlobalSidebar() {
   return (
     <Sidebar variant="floating">
       <SidebarHeader className="flex flex-row items-center justify-between p-4 ">
-        <h1 className="select-none uppercase font-semibold text-blue-500 ">
+        <h1 className="select-none uppercase font-semibold text-blue-500  ">
           Hiremate
         </h1>
       </SidebarHeader>
@@ -67,7 +67,7 @@ export async function GlobalSidebar() {
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
-                      className="text-slate-700 stroke-slate-700 dark:text-slate-300 dark:stroke-slate-300"
+                      className="text-neutral-700 stroke-neutral-700 dark:text-neutral-300 dark:stroke-neutral-300"
                     >
                       <item.icon />
                       <span className="text-sm font-medium">{item.title}</span>
@@ -88,7 +88,7 @@ export async function GlobalSidebar() {
                 <SidebarMenuButton asChild>
                   <Link
                     href={pages.applications}
-                    className="text-slate-700 stroke-slate-700 dark:text-slate-300 dark:stroke-slate-300"
+                    className="text-neutral-700 stroke-neutral-700 dark:text-neutral-300 dark:stroke-neutral-300"
                   >
                     <FileText strokeWidth={1.5} />
                     <span className="text-sm font-medium">
@@ -108,12 +108,12 @@ export async function GlobalSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer" size="lg">
-                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 ">
+                  <div className="flex items-center gap-2 text-neutral-700 dark:text-neutral-300 ">
                     <Image
                       height={24}
                       width={24}
-                      alt={session?.user.name!}
-                      src={session?.user.image!}
+                      alt={session?.user.name || ""}
+                      src={session?.user.image || ""}
                       className="rounded-full"
                     />
                     <div>
@@ -128,7 +128,7 @@ export async function GlobalSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent side={isMobile ? "top" : "left"} align="end">
-                <DropdownMenuItem className="cursor-pointer text-xs text-slate-700 dark:text-slate-300 w-full flex items-center justify-between gap-4 ">
+                <DropdownMenuItem className="cursor-pointer text-xs text-neutral-700 dark:text-neutral-300 w-full flex items-center justify-between gap-4 ">
                   <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
                   <User2 strokeWidth={1.2} size={16} />
                 </DropdownMenuItem>

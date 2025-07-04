@@ -51,7 +51,7 @@ export function CreateApplicationModalStateful({
               Preencha o formulário a seguir para cadastrar uma nova candidatura
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-2 grid-cols-2 max-h-[40vh] overflow-y-auto">
+          <div className="grid gap-2 grid-cols-2 max-h-[40vh] overflow-y-auto p-2">
             <div className="grid gap-3 col-span-2">
               <Label htmlFor="companyName">Empresa</Label>
               <Input {...register("companyName")} />

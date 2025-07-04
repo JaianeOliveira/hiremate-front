@@ -39,7 +39,7 @@ export default async function layout(props: PropsWithChildren) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent align="end" side="bottom">
-                <p className="text-slate-400 dark:text-slate-500 text-xs italic text-center">
+                <p className="text-neutral-400 dark:text-neutral-500 text-xs italic text-center">
                   Você não tem nenhuma notificação!
                 </p>
               </PopoverContent>
