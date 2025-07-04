@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HireMate
+> Um assistente de carreira movido a IA que otimiza currículos, acompanha suas candidaturas e dispara follow-ups inteligentes
 
-## Getting Started
+## Setup
+### Instalação
+```bash
+git clone [https://github.com/usuário/projeto.git](https://github.com/JaianeOliveira/hiremate-front.git)
 
-First, run the development server:
+cd hiremate-front
 
+npm install
+```
+### Configuração de ambiente
+1. Copie `.env.example` para `.env`
+2. Preencha as variáveis de ambiente
+
+### Rodando localmente
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+> OBS: Certifique-se de também estar com o [repositório da API](https://github.com/JaianeOliveira/hiremate-api) rodando localmente.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Se preferir, pode rodar o projeto no docker
+- `Dockerfile` para produção
+- `Dockerfile.dev` para desenvolvimento
+- Você também pode rodar o projeto completo (front, back e banco) de uma só vez com o `docker-compose.yaml` do repositório [hiremate-infra](https://github.com/JaianeOliveira/hiremate-infra)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack utilizada
+- **Frontend**: Next.js, TailwindCSS, ShadcnUI, Zod + React Hook Form, NextAuth
+- **Backend**: NestJS, Typescript, Prisma ORM
+- **Banco de dados**: PostgreSQL
+- **CI/CD**: Github Actions, Docker
+- **Testes**: Jest, react-testing-library
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Histórico
+- O histórico de desenvolvimento pode ser acompanhado em [CHANGELOG.md](https://github.com/JaianeOliveira/hiremate-front/edit/main/CHANGELOG.md) ou [neste documento](https://docs.google.com/document/d/1bQ7UdGG1WodTpv903-e4fFPKZbGBLNAh-rQtcGIO9Nk/edit?usp=sharing)
 
-## Learn More
+## Meta
+Jaiane Oliveira - [jaianeoliveira.dev@gmail.com](mailto:jaianeoliveira.dev@gmail.com)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[DEMONSTRATION ONLY LICENSE](LICENSE) – você pode baixar e rodar localmente, mas não redistribuir nem apresentar como seu. Veja `LICENSE` para mais informações.
