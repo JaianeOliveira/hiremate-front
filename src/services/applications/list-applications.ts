@@ -1,9 +1,29 @@
 import { api } from "@/lib/axios";
+import { Application, ApplicationStatusEnum } from "@/types/applications";
+import { Pagination } from "@/types/pagination";
 
 export interface ListApplicationsRequest {
-  params?: Record<string, string>;
+  pagination?: Pagination;
+  filters?: {
+    status?: ApplicationStatusEnum[];
+    company?: string[];
+    isTalentPool?: boolean;
+  };
 }
 
-export const listApplicationsService = async () => {
-  return await api.get("/applications");
+export interface ListApplicationsResponse {
+  data: Application[];
+  pagination: Pagination;
+}
+
+export const listApplicationsService = async ({
+  filters,
+  pagination,
+}: ListApplicationsRequest) => {
+  return await api.get<ListApplicationsResponse>("/applications", {
+    params: {
+      ...filters,
+      ...pagination,
+    },
+  });
 };

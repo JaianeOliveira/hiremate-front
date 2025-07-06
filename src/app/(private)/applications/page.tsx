@@ -1,30 +1,16 @@
 "use client";
 
-import { ApplicationsTable } from "@/components/general/applications-table";
+import { ApplicationsTable } from "@/components/general/applications-table/applications-table";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { listApplicationsService } from "@/services/applications/list-applications";
-import { useEffect, useState } from "react";
+import { ApplicationStatusGroupEnum } from "@/types/applications";
+import { useState } from "react";
 
 export default function ApplicationsPage() {
-  const [applications, setApplications] = useState([]);
-
+  const [statusGroup, setStatusGroup] = useState<ApplicationStatusGroupEnum>(
+    ApplicationStatusGroupEnum.RUNNING
+  );
   const { open } = useSidebar();
-
-  const handleFetchApplications = async () => {
-    try {
-      const response = await listApplicationsService();
-      setApplications(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  console.log(applications);
-
-  useEffect(() => {
-    handleFetchApplications();
-  }, []);
 
   return (
     <div
@@ -39,29 +25,40 @@ export default function ApplicationsPage() {
       </div>
 
       <Tabs
-        defaultValue="runing"
         className="flex flex-col flex-1 overflow-auto"
+        value={statusGroup}
+        onValueChange={(v: string) =>
+          setStatusGroup(v as ApplicationStatusGroupEnum)
+        }
       >
         <TabsList>
-          <TabsTrigger value="runing">Em andamento</TabsTrigger>
-          <TabsTrigger value="rejected">Rejeitado</TabsTrigger>
-          <TabsTrigger value="archived">Arquivados</TabsTrigger>
-          <TabsTrigger value="talentPool">Banco de talentos</TabsTrigger>
+          <TabsTrigger value={ApplicationStatusGroupEnum.RUNNING}>
+            Em andamento
+          </TabsTrigger>
+          <TabsTrigger value={ApplicationStatusGroupEnum.REJECTED}>
+            Rejeitado
+          </TabsTrigger>
+          <TabsTrigger value={ApplicationStatusGroupEnum.ARCHIVED}>
+            Arquivados
+          </TabsTrigger>
+          <TabsTrigger value={ApplicationStatusGroupEnum.TALENT_POOL}>
+            Banco de talentos
+          </TabsTrigger>
         </TabsList>
         <TabsContent
-          value="runing"
+          value={ApplicationStatusGroupEnum.RUNNING}
           className="flex-1 flex flex-col gap-2 overflow-auto"
         >
-          <ApplicationsTable />
+          <ApplicationsTable statusGroup={statusGroup} />
         </TabsContent>
-        <TabsContent value="rejected">
-          <ApplicationsTable />
+        <TabsContent value={ApplicationStatusGroupEnum.REJECTED}>
+          <ApplicationsTable statusGroup={statusGroup} />
         </TabsContent>
-        <TabsContent value="archived">
-          <ApplicationsTable />
+        <TabsContent value={ApplicationStatusGroupEnum.ARCHIVED}>
+          <ApplicationsTable statusGroup={statusGroup} />
         </TabsContent>
-        <TabsContent value="talentPool">
-          <ApplicationsTable />
+        <TabsContent value={ApplicationStatusGroupEnum.TALENT_POOL}>
+          <ApplicationsTable statusGroup={statusGroup} />
         </TabsContent>
       </Tabs>
     </div>

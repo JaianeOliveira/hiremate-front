@@ -15,15 +15,15 @@ export type Application = {
 };
 
 export enum ApplicationStatusEnum {
-  SENT, // Enviado
-  INTERVIEWS_AND_TESTS, // Entrevistas e testes
-  SUBMISSION_PENDING, // Candidatura pendente (ainda falta enviar)
-  CULTURAL_FIT, // Fit cultural
-  OFFER_RECEIVED, // Proposta recebida
-  REJECTED, // Reprovado
-  NO_RESPONSE, // Sem resposta
-  OFFER_DECLINED, // Proposta rejeitada
-  POSITION_ACCEPTED, // Cargo aceito
+  SENT = "SENT", // Enviado
+  INTERVIEWS_AND_TESTS = "INTERVIEWS_AND_TESTS", // Entrevistas e testes
+  SUBMISSION_PENDING = "SUBMISSION_PENDING", // Candidatura pendente (ainda falta enviar)
+  CULTURAL_FIT = "CULTURAL_FIT", // Fit cultural
+  OFFER_RECEIVED = "OFFER_RECEIVED", // Proposta recebida
+  REJECTED = "REJECTED", // Reprovado
+  NO_RESPONSE = "NO_RESPONSE", // Sem resposta
+  OFFER_DECLINED = "OFFER_DECLINED", // Proposta rejeitada
+  POSITION_ACCEPTED = "POSITION_ACCEPTED", // Cargo aceito
 }
 
 export const ApplicationStatusLabels: Record<ApplicationStatusEnum, string> = {
@@ -38,125 +38,31 @@ export const ApplicationStatusLabels: Record<ApplicationStatusEnum, string> = {
   [ApplicationStatusEnum.POSITION_ACCEPTED]: "Cargo aceito",
 };
 
-export const mockApplications: Application[] = [
-  {
-    id: "1",
-    jobTitle: "Frontend Developer",
-    companyName: "Acme Corp",
-    applicationDate: "2025-06-15T10:00:00.000Z",
-    status: ApplicationStatusEnum.SENT,
-    notes: "Enviado currículo via site da empresa",
-    link: "https://acme.jobs/frontend-developer",
-    contact: "recrutamento@acme.com",
-    feedback: undefined,
-    isTalentPool: false,
-    createdAt: "2025-06-15T10:00:00.000Z",
-    updatedAt: "2025-06-15T10:00:00.000Z",
-    statusUpdatedAt: "2025-06-15T10:00:00.000Z",
-  },
-  {
-    id: "2",
-    jobTitle: "Backend Engineer",
-    companyName: "Globex",
-    applicationDate: "2025-05-20T14:30:00.000Z",
-    status: ApplicationStatusEnum.INTERVIEWS_AND_TESTS,
-    notes: "Teste de código enviado, aguardando agenda",
-    link: "https://careers.globex.com/backend-engineer",
-    contact: "tech@globex.com",
-    feedback: "Ótimo portfólio, porém precisa melhorar testes unitários",
-    isTalentPool: false,
-    createdAt: "2025-05-20T14:30:00.000Z",
-    updatedAt: "2025-05-22T09:00:00.000Z",
-    statusUpdatedAt: "2025-05-22T09:00:00.000Z",
-  },
-  {
-    id: "3",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-  {
-    id: "4",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-  {
-    id: "5",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-  {
-    id: "6",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-  {
-    id: "7",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-  {
-    id: "8",
-    jobTitle: "Fullstack Developer Intern",
-    companyName: "Initech",
-    applicationDate: "2025-04-10T08:15:00.000Z",
-    status: ApplicationStatusEnum.NO_RESPONSE,
-    notes: undefined,
-    link: "https://jobs.initech.com/internships/fullstack",
-    contact: undefined,
-    feedback: undefined,
-    isTalentPool: true,
-    createdAt: "2025-04-10T08:15:00.000Z",
-    updatedAt: "2025-04-10T08:15:00.000Z",
-    statusUpdatedAt: "2025-04-10T08:15:00.000Z",
-  },
-];
+export enum ApplicationStatusGroupEnum {
+  RUNNING = "RUNNING",
+  REJECTED = "REJECTED",
+  ARCHIVED = "ARCHIVED",
+  TALENT_POOL = "TALENT_POOl",
+}
+
+export const ApplicationStatusGroup: Record<
+  ApplicationStatusGroupEnum,
+  ApplicationStatusEnum[]
+> = {
+  [ApplicationStatusGroupEnum.RUNNING]: [
+    ApplicationStatusEnum.SENT,
+    ApplicationStatusEnum.INTERVIEWS_AND_TESTS,
+    ApplicationStatusEnum.CULTURAL_FIT,
+    ApplicationStatusEnum.OFFER_RECEIVED,
+    ApplicationStatusEnum.SUBMISSION_PENDING,
+  ],
+  [ApplicationStatusGroupEnum.REJECTED]: [
+    ApplicationStatusEnum.NO_RESPONSE,
+    ApplicationStatusEnum.REJECTED,
+  ],
+  [ApplicationStatusGroupEnum.ARCHIVED]: [
+    ApplicationStatusEnum.OFFER_DECLINED,
+    ApplicationStatusEnum.POSITION_ACCEPTED,
+  ],
+  [ApplicationStatusGroupEnum.TALENT_POOL]: [],
+};
