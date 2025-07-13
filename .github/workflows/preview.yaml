@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  Deploy-Preview:
+  Tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,6 +43,15 @@ jobs:
         with:
           name: coverage-report
           path: coverage
+
+  Deploy-Preview:
+    needs: [Tests]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Install Vercel CLI
         run: npm install --global vercel
