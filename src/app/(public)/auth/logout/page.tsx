@@ -1,13 +1,20 @@
 "use client";
 
+import { api } from "@/lib/axios";
 import { pages } from "@/utils/pages";
 import { Plane } from "lucide-react";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function LogoutPage() {
   const [shouldShowBackUrl, setShouldShowBackUrl] = useState(false);
+  const router = useRouter();
+
+  const handleRemoveCookie = async () => {
+    await api.post("/auth/logout");
+    router.replace(pages.home);
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => setShouldShowBackUrl(true), 3000);
@@ -16,8 +23,8 @@ export default function LogoutPage() {
   }, []);
 
   useEffect(() => {
-    signOut({ callbackUrl: pages.home, redirect: true });
-  });
+    handleRemoveCookie();
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen">

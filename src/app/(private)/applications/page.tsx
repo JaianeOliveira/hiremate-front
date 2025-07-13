@@ -1,7 +1,6 @@
 "use client";
 
 import { ApplicationsTable } from "@/components/general/applications-table/applications-table";
-import { useSidebar } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ApplicationStatusGroupEnum } from "@/types/applications";
 import { useState } from "react";
@@ -10,13 +9,10 @@ export default function ApplicationsPage() {
   const [statusGroup, setStatusGroup] = useState<ApplicationStatusGroupEnum>(
     ApplicationStatusGroupEnum.RUNNING
   );
-  const { open } = useSidebar();
 
   return (
     <div
-      className={`max-h-screen overflow-hidden flex flex-col gap-4 ${
-        open ? "p-4" : "py-4 px-[4vw]"
-      } transition-all`}
+      className={`max-h-screen overflow-hidden flex flex-col gap-4 transition-all`}
     >
       <div className="flex gap-4 items-center justify-between mb-4">
         <h2 className="text-neutral-700 dark:text-neutral-200 text-base font-semibold">

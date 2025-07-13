@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Montserrat } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const montserratSans = Montserrat({
   variable: "--font-montserrat-sans",
@@ -25,13 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className="dark">
+    <html lang="pt-BR">
       <body
         className={`${montserratSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Toaster duration={1000} />
-        <ToggleDarkModeButtonStateful />
+        <Providers>
+          {children}
+          <Toaster duration={1000} position="top-right" />
+          <ToggleDarkModeButtonStateful />
+        </Providers>
       </body>
     </html>
   );

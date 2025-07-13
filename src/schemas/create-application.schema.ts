@@ -4,13 +4,13 @@ import { z } from "zod";
 export const CreateApplicationSchema = z.object({
   companyName: z.string().min(1, { message: "Campo obrigatório" }),
   jobTitle: z.string().min(1, { message: "Campo obrigatório" }),
-  link: z.string().url().optional().nullish(),
-  applicationDate: z.string({ message: "Campo obrigatório" }),
-  status: z.nativeEnum(ApplicationStatusEnum).optional().nullish(),
+  link: z.string().optional(),
+  applicationDate: z.date({ message: "Campo obrigatório" }),
+  status: z.nativeEnum(ApplicationStatusEnum).optional(),
   isTalentPool: z.boolean(),
-  notes: z.string().optional().nullish(),
-  contact: z.string().optional().nullish(),
-  feedback: z.string().optional().nullish(),
+  notes: z.string().optional(),
+  contact: z.string().optional(),
+  feedback: z.string().optional(),
 });
 
 export type CreateApplicationType = z.infer<typeof CreateApplicationSchema>;

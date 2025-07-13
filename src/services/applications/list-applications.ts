@@ -25,5 +25,6 @@ export const listApplicationsService = async ({
       ...filters,
       ...pagination,
     },
+    headers: {},
   });
 };

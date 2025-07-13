@@ -1,4 +1,4 @@
-import { LoginButton } from "@/components/general/login-button.stateful";
+import { LoginButton } from "@/components/general/login-button/login-button.stateful";
 
 export default function LoginPage() {
   return (

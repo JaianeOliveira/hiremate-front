@@ -16,7 +16,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { authOptions } from "@/lib/auth";
 import { pages } from "@/utils/pages";
 import {
   DropdownMenuLabel,
@@ -24,9 +23,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 
 import { ChartPie, FileText, LogOut, Send, User2 } from "lucide-react";
-import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
-import Image from "next/image";
 import Link from "next/link";
 
 const items = [
@@ -47,7 +44,6 @@ export async function GlobalSidebar() {
   const ua = headersList.get("user-agent") ?? "";
   const isMobile = /Android|iPhone|iPad|Mobile/.test(ua);
 
-  const session = await getServerSession(authOptions);
   return (
     <Sidebar variant="floating">
       <SidebarHeader className="flex flex-row items-center justify-between p-4 ">
@@ -109,7 +105,7 @@ export async function GlobalSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer" size="lg">
                   <div className="flex items-center gap-2 text-neutral-700 dark:text-neutral-300 ">
-                    <Image
+                    {/* <Image
                       height={24}
                       width={24}
                       alt={session?.user.name || ""}
@@ -123,7 +119,7 @@ export async function GlobalSidebar() {
                       <p className="text-xs font-light">
                         {session?.user.email}
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -138,7 +134,7 @@ export async function GlobalSidebar() {
                   asChild
                   className="cursor-pointer text-xs w-full flex items-center justify-between gap-4 "
                 >
-                  <Link href={pages.logout}>
+                  <Link href={`/auth/logout`}>
                     <DropdownMenuLabel>Sair</DropdownMenuLabel>
                     <LogOut strokeWidth={1.2} size={16} />
                   </Link>

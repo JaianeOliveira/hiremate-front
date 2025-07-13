@@ -1,5 +1,6 @@
-import { GlobalHeader } from "@/components/general/global-header";
-import { GlobalSidebar } from "@/components/general/global-sidebar";
+import { GlobalHeader } from "@/components/general/global-header/global-header";
+import { GlobalSidebar } from "@/components/general/global-sidebar/global-sidebar";
+import { PagesWrapper } from "@/components/general/pages-wrapper/pages-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -7,10 +8,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { authOptions } from "@/lib/auth";
+import { COOKIE_ACCESS_TOKEN } from "@/config/cookies";
 import { pages } from "@/utils/pages";
 import { Bell } from "lucide-react";
-import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
@@ -19,9 +19,9 @@ export default async function layout(props: PropsWithChildren) {
   const cookieStore = await cookies();
   const sidebarIsOpen = cookieStore.get("sidebar_state")?.value === "true";
 
-  const session = await getServerSession(authOptions);
+  const token = cookieStore.get(COOKIE_ACCESS_TOKEN)?.value;
 
-  if (!session?.user) {
+  if (!token) {
     redirect(pages.login);
   }
 
@@ -45,7 +45,7 @@ export default async function layout(props: PropsWithChildren) {
               </PopoverContent>
             </Popover>
           </GlobalHeader>
-          {props.children}
+          <PagesWrapper>{props.children}</PagesWrapper>
         </main>
       </SidebarProvider>
     </div>

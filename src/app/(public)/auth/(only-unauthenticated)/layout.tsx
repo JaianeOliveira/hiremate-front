@@ -1,13 +1,14 @@
-import { authOptions } from "@/lib/auth";
+import { COOKIE_ACCESS_TOKEN } from "@/config/cookies";
 import { pages } from "@/utils/pages";
-import { getServerSession } from "next-auth";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 export default async function Layout({ children }: PropsWithChildren) {
-  const session = await getServerSession(authOptions);
+  const cookieStore = await cookies();
+  const hasAuthCookie = cookieStore.has(COOKIE_ACCESS_TOKEN);
 
-  if (session) {
+  if (hasAuthCookie) {
     redirect(pages.applications);
   }
 

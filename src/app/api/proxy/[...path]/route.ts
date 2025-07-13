@@ -1,7 +1,8 @@
+import { COOKIE_ACCESS_TOKEN } from "@/config/cookies";
 import axios, { AxiosRequestConfig } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
+const BACKEND_BASE_URL = process.env.API_URL!;
 
 async function handleProxy(
   req: NextRequest,
@@ -12,9 +13,11 @@ async function handleProxy(
 
   const headers: Record<string, string> = {};
   const cookie = req.headers.get("cookie");
+
   if (cookie) headers["cookie"] = cookie;
-  const authorization = req.headers.get("authorization");
-  if (authorization) headers["authorization"] = authorization;
+
+  const authorization = req.headers.get(COOKIE_ACCESS_TOKEN);
+  if (authorization) headers[COOKIE_ACCESS_TOKEN] = authorization;
 
   const config: AxiosRequestConfig = {
     headers,
@@ -22,6 +25,7 @@ async function handleProxy(
   };
 
   let axiosResp;
+
   if (req.method === "GET" || req.method === "DELETE") {
     axiosResp = await axios.request({
       method: req.method,

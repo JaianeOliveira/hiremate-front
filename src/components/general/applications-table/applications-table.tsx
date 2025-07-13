@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,27 +21,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useSetSearchParams } from "@/hooks/useSetSearchParams";
 import { listApplicationsService } from "@/services/applications/list-applications";
 import { listCompaniesService } from "@/services/applications/list-companies";
 import {
-  Application,
+  type Application,
   ApplicationStatusEnum,
   ApplicationStatusGroup,
   ApplicationStatusGroupEnum,
   ApplicationStatusLabels,
 } from "@/types/applications";
-import { Pagination } from "@/types/pagination";
+import type { Pagination } from "@/types/pagination";
+import { appQueryParams } from "@/utils/app-query-params";
+import { useQuery } from "@tanstack/react-query";
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
-  VisibilityState,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import {
@@ -50,158 +54,164 @@ import {
   ChevronRight,
   MoreHorizontal,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { ConfirmDeleteApplicationModalStateful } from "../confirm-delete-application-modal/confirm-delete-application-modal.steteful";
 import { CreateApplicationModalStateful } from "../create-application-modal/create-application-modal.stateful";
-
-export const columns: ColumnDef<Application>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Selecionar todos"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Selecionar"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-    size: 1,
-  },
-
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {
-          ApplicationStatusLabels[
-            row.getValue("status") as ApplicationStatusEnum
-          ]
-        }
-      </div>
-    ),
-    size: 2,
-  },
-  {
-    accessorKey: "companyName",
-    header: () => "Empresa",
-    cell: ({ row }) => <div>{row.getValue("companyName")}</div>,
-    size: 3,
-  },
-  {
-    accessorKey: "jobTitle",
-    header: () => "Título da vaga",
-    cell: ({ row }) => <div>{row.getValue("jobTitle")}</div>,
-    size: 4,
-  },
-  {
-    accessorKey: "applicationDate",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="px-0"
-      >
-        Data de inscrição
-        <ArrowUpDown />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const value = row.getValue("applicationDate");
-
-      const formatted = dayjs(
-        value as string | number | Date | null | undefined
-      ).format("DD/MM/YYYY");
-
-      return <div>{formatted}</div>;
-    },
-    size: 2,
-  },
-  {
-    accessorKey: "statusUpdatedAt",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="px-0"
-      >
-        <span>Ultima atualização</span>
-        <ArrowUpDown />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const value = row.getValue("statusUpdatedAt");
-
-      const formatted = dayjs(
-        value as string | number | Date | null | undefined
-      ).format("DD/MM/YYYY");
-
-      return <div>{formatted}</div>;
-    },
-    size: 2,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Mais opções</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Mais opções</DropdownMenuLabel>
-            <DropdownMenuItem>Ver detalhes</DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Ir para o link da vaga
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem variant="destructive">Excluir</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-    size: 1,
-  },
-];
 
 type ApplicationsTableProps = {
   statusGroup: ApplicationStatusGroupEnum;
 };
 
 export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const columns: ColumnDef<Application>[] = useMemo(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Selecionar todos"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Selecionar"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        size: 1,
+      },
+
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => (
+          <Badge variant="secondary">
+            {
+              ApplicationStatusLabels[
+                row.getValue("status") as ApplicationStatusEnum
+              ]
+            }
+          </Badge>
+        ),
+        size: 2,
+      },
+      {
+        accessorKey: "companyName",
+        header: () => "Empresa",
+        cell: ({ row }) => <div>{row.getValue("companyName")}</div>,
+        size: 3,
+      },
+      {
+        accessorKey: "jobTitle",
+        header: () => "Título da vaga",
+        cell: ({ row }) => <div>{row.getValue("jobTitle")}</div>,
+        size: 4,
+      },
+      {
+        accessorKey: "applicationDate",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="px-0"
+          >
+            Data de inscrição
+            <ArrowUpDown />
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const value = row.getValue("applicationDate");
+
+          const formatted = dayjs(
+            value as string | number | Date | null | undefined
+          ).format("DD/MM/YYYY");
+
+          return <div>{formatted}</div>;
+        },
+        size: 2,
+      },
+      {
+        accessorKey: "statusUpdatedAt",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="px-0"
+          >
+            <span>Ultima atualização</span>
+            <ArrowUpDown />
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const value = row.getValue("statusUpdatedAt");
+
+          const formatted = dayjs(
+            value as string | number | Date | null | undefined
+          ).format("DD/MM/YYYY");
+
+          return <div>{formatted}</div>;
+        },
+        size: 2,
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+          const application = row.original;
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Mais opções</span>
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Mais opções</DropdownMenuLabel>
+                <DropdownMenuItem>Ver detalhes</DropdownMenuItem>
+                <DropdownMenuItem asChild disabled={!application.link}>
+                  <Link target="_blank" href={application.link || ""}>
+                    Ir para o link da vaga
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Editar</DropdownMenuItem>
+
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => {
+                    handleDeleteApplications(application);
+                  }}
+                >
+                  Excluir
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+        size: 1,
+      },
+    ],
+    []
+  );
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const [companies, setCompanies] = useState<string[]>([]);
-
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<ApplicationStatusEnum[]>(
-    []
-  );
 
   const [pagination, setPagination] = useState<Pagination>({
     limit: 10,
@@ -210,58 +220,80 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
     total_pages: 0,
   });
 
-  const handleFetchApplications = async () => {
-    setIsLoading(true);
-    try {
-      const response = await listApplicationsService({
+  const selectedCompanies =
+    searchParams.get(appQueryParams.selectedCompanies)?.split(",") ?? [];
+  const selectedStatus =
+    searchParams.get(appQueryParams.selectedStatus)?.split(",") ?? [];
+
+  const { setParam, removeParam } = useSetSearchParams();
+
+  const handleDeleteApplications = (application: Application) => {
+    setParam(appQueryParams.deleteApplication, application.id);
+  };
+
+  const handleSelectCompany = (company: string, checked: boolean) => {
+    const newSelectedCompanies = checked
+      ? [...selectedCompanies, company]
+      : selectedCompanies?.filter((c) => c !== company);
+
+    setParam(appQueryParams.selectedCompanies, newSelectedCompanies.join(","));
+  };
+
+  const handleSelectStatus = (
+    status: ApplicationStatusEnum,
+    checked: boolean
+  ) => {
+    const newSelectedStatus = checked
+      ? [...selectedStatus, status]
+      : selectedStatus?.filter((c) => c !== status);
+
+    setParam(appQueryParams.selectedStatus, newSelectedStatus.join(","));
+  };
+
+  const clearSelectedStatus = () => {
+    removeParam(appQueryParams.selectedStatus);
+  };
+
+  const { data: companies } = useQuery({
+    queryKey: ["list-companies"],
+    queryFn: () => listCompaniesService({}),
+  });
+
+  const { data: applications, isLoading } = useQuery({
+    queryKey: [
+      "list-applications",
+      pagination,
+      {
+        company: selectedCompanies,
+        isTalentPool: Boolean(
+          statusGroup === ApplicationStatusGroupEnum.TALENT_POOL
+        ),
+        status: selectedStatus.length
+          ? (selectedStatus as ApplicationStatusEnum[])
+          : ApplicationStatusGroup[statusGroup],
+      },
+    ],
+    queryFn: () =>
+      listApplicationsService({
         filters: {
-          status: selectedStatus.length
-            ? selectedStatus
-            : ApplicationStatusGroup[statusGroup],
+          company: selectedCompanies,
           isTalentPool: Boolean(
             statusGroup === ApplicationStatusGroupEnum.TALENT_POOL
           ),
-          company: selectedCompanies,
+          status: selectedStatus.length
+            ? (selectedStatus as ApplicationStatusEnum[])
+            : ApplicationStatusGroup[statusGroup],
         },
         pagination,
-      });
-
-      setApplications(response.data.data);
-      setPagination(response.data.pagination);
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleFetchCompanies = async () => {
-    try {
-      const response = await listCompaniesService({
-        filters: {
-          status: ApplicationStatusGroup[statusGroup],
-          isTalentPool: Boolean(
-            statusGroup === ApplicationStatusGroupEnum.TALENT_POOL
-          ),
-        },
-      });
-
-      setCompanies(response.data.data);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  };
+      }),
+  });
 
   useEffect(() => {
-    handleFetchApplications();
-  }, [statusGroup, selectedCompanies, selectedStatus, pagination.page]);
-
-  useEffect(() => {
-    handleFetchCompanies();
+    clearSelectedStatus();
   }, [statusGroup]);
 
   const table = useReactTable({
-    data: applications,
+    data: applications?.data.data || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -316,20 +348,14 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {companies.map((company) => {
+            {companies?.data.data.map((company) => {
               return (
                 <DropdownMenuCheckboxItem
                   key={company}
                   className="capitalize"
                   checked={selectedCompanies.includes(company)}
                   onCheckedChange={(checked) => {
-                    {
-                      setSelectedCompanies((prev) =>
-                        checked
-                          ? [...prev, company]
-                          : prev.filter((c) => c !== company)
-                      );
-                    }
+                    handleSelectCompany(company, checked);
                   }}
                 >
                   {company}
@@ -358,11 +384,7 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
                   className="capitalize"
                   checked={selectedStatus.includes(status)}
                   onCheckedChange={(checked) => {
-                    setSelectedStatus((prev) =>
-                      checked
-                        ? [...prev, status]
-                        : prev.filter((c) => c !== status)
-                    );
+                    handleSelectStatus(status, checked);
                   }}
                 >
                   {ApplicationStatusLabels[status]}
@@ -526,6 +548,8 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
           </div>
         </>
       )}
+
+      <ConfirmDeleteApplicationModalStateful />
     </div>
   );
 };

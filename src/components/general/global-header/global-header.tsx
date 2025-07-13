@@ -1,7 +1,7 @@
 "use client";
 
+import { useSidebar, SidebarTrigger } from "@/components/ui/sidebar";
 import { PropsWithChildren } from "react";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
 
 export const GlobalHeader = ({ children }: PropsWithChildren) => {
   const { open } = useSidebar();
