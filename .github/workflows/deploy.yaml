@@ -12,7 +12,7 @@ on:
 jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
-    trategy:
+    strategy:
       matrix:
         node-version: [22.x]
     steps:
