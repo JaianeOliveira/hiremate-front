@@ -1,14 +1,18 @@
-name: CI (Jest & RTL)
+name: Vercel preview deployment
 
-on: ["push"]
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
-  test:
+  Deploy-Preview:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
-    strategy:
+    trategy:
       matrix:
         node-version: [22.x]
     steps:
@@ -39,3 +43,15 @@ jobs:
         with:
           name: coverage-report
           path: coverage
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      - name: Pull vercel Environment information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build project artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy project artifacts
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
