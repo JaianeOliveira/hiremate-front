@@ -57,6 +57,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ApplicationOverviewSheetStateful } from "../application-overview-sheet/application-overview-sheet.stateful";
 import { ConfirmDeleteApplicationModalStateful } from "../confirm-delete-application-modal/confirm-delete-application-modal.steteful";
 import { CreateApplicationModalStateful } from "../create-application-modal/create-application-modal.stateful";
 
@@ -181,7 +182,13 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Mais opções</DropdownMenuLabel>
-                <DropdownMenuItem>Ver detalhes</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    handleViewApplicationDetails(application);
+                  }}
+                >
+                  Ver detalhes
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild disabled={!application.link}>
                   <Link target="_blank" href={application.link || ""}>
                     Ir para o link da vaga
@@ -229,6 +236,10 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
 
   const handleDeleteApplications = (application: Application) => {
     setParam(appQueryParams.deleteApplication, application.id);
+  };
+
+  const handleViewApplicationDetails = (application: Application) => {
+    setParam(appQueryParams.showApplicationDetails, application.id);
   };
 
   const handleSelectCompany = (company: string, checked: boolean) => {
@@ -550,6 +561,7 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
       )}
 
       <ConfirmDeleteApplicationModalStateful />
+      <ApplicationOverviewSheetStateful />
     </div>
   );
 };

@@ -25,6 +25,7 @@ import {
 import { ChartPie, FileText, LogOut, Send, User2 } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { UserInfoStateful } from "../user-info/user-info.stateful";
 
 const items = [
   {
@@ -104,23 +105,7 @@ export async function GlobalSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer" size="lg">
-                  <div className="flex items-center gap-2 text-neutral-700 dark:text-neutral-300 ">
-                    {/* <Image
-                      height={24}
-                      width={24}
-                      alt={session?.user.name || ""}
-                      src={session?.user.image || ""}
-                      className="rounded-full"
-                    />
-                    <div>
-                      <h3 className="text-sm font-semibold">
-                        {session?.user.name}
-                      </h3>
-                      <p className="text-xs font-light">
-                        {session?.user.email}
-                      </p>
-                    </div> */}
-                  </div>
+                  <UserInfoStateful />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent side={isMobile ? "top" : "left"} align="end">

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSetSearchParams } from "@/hooks/useSetSearchParams";
 import { deletApplicationService } from "@/services/applications/delete-application";
-import { findUniqueApplicationService } from "@/services/applications/find-unique-application";
+import { getUniqueApplicationService } from "@/services/applications/get-unique-application";
 import { ApplicationStatusLabels } from "@/types/applications";
 import { appQueryParams } from "@/utils/app-query-params";
 import { serviceQueryKeys } from "@/utils/service-query-keys";
@@ -39,7 +39,7 @@ export const ConfirmDeleteApplicationModalStateful = () => {
   } = useQuery({
     queryKey: [serviceQueryKeys.getUniqueApplication, applicationId],
     queryFn: async () => {
-      const response = await findUniqueApplicationService({
+      const response = await getUniqueApplicationService({
         id: applicationId || "",
       });
 
