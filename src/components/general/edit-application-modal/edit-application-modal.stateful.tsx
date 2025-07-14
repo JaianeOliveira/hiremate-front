@@ -94,7 +94,7 @@ export function EditApplicationModalStateful() {
         feedback: applicationData?.feedback,
         isTalentPool: applicationData?.isTalentPool,
         jobTitle: applicationData?.jobTitle,
-        link: applicationData?.jobTitle,
+        link: applicationData?.link,
         notes: applicationData?.notes,
         status: applicationData?.status,
       });
@@ -119,7 +119,7 @@ export function EditApplicationModalStateful() {
     },
   });
 
-  const { mutate: editApplication } = useMutation({
+  const { mutate: editApplication, isPending } = useMutation({
     mutationFn: ({ data, id }: EditApplicationRequest) =>
       editApplicationService({ data, id }),
     onSuccess: () => {
@@ -373,11 +373,16 @@ export function EditApplicationModalStateful() {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline" onClick={() => form.reset()}>
+                <Button
+                  variant="outline"
+                  onClick={() => handleOpenChange(false)}
+                >
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit">Editar candidatura</Button>
+              <Button type="submit" disabled={isPending}>
+                Editar candidatura
+              </Button>
             </DialogFooter>
           </form>
         </Form>

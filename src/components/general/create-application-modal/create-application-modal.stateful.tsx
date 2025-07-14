@@ -75,7 +75,7 @@ export function CreateApplicationModalStateful({
     },
   });
 
-  const { mutate: createApplication } = useMutation({
+  const { mutate: createApplication, isPending } = useMutation({
     mutationFn: creteApplicationService,
     onSuccess: () => {
       toast.success("Candidatura criada com sucesso");
@@ -329,7 +329,9 @@ export function CreateApplicationModalStateful({
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit">Criar candidatura</Button>
+              <Button type="submit" disabled={isPending}>
+                Criar candidatura
+              </Button>
             </DialogFooter>
           </form>
         </Form>
