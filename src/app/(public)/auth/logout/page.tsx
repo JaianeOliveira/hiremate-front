@@ -12,7 +12,7 @@ export default function LogoutPage() {
   const router = useRouter();
 
   const handleRemoveCookie = async () => {
-    await api.post("/auth/logout");
+    api.post("/auth/logout");
     router.replace(pages.home);
   };
 
