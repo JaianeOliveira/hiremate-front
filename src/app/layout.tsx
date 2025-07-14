@@ -1,4 +1,5 @@
 import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
+import "dayjs/locale/pt-br";
 import type { Metadata } from "next";
 import { Geist_Mono, Montserrat } from "next/font/google";
 import { Toaster } from "sonner";

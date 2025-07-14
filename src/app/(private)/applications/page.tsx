@@ -2,10 +2,13 @@
 
 import { ApplicationsTable } from "@/components/general/applications-table/applications-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ApplicationStatusGroupEnum } from "@/types/applications";
 import { useState } from "react";
 
 export default function ApplicationsPage() {
+  const isMobile = useIsMobile();
+
   const [statusGroup, setStatusGroup] = useState<ApplicationStatusGroupEnum>(
     ApplicationStatusGroupEnum.RUNNING
   );
@@ -26,6 +29,7 @@ export default function ApplicationsPage() {
         onValueChange={(v: string) =>
           setStatusGroup(v as ApplicationStatusGroupEnum)
         }
+        orientation={isMobile ? "vertical" : "horizontal"}
       >
         <TabsList>
           <TabsTrigger value={ApplicationStatusGroupEnum.RUNNING}>
