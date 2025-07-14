@@ -4,4 +4,5 @@ export const appQueryParams = {
   selectedStatus: "status",
   currentStatusGroup: "status_group",
   showApplicationDetails: "application",
+  editApplication: "edit_application",
 };

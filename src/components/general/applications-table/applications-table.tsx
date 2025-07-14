@@ -60,6 +60,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ApplicationOverviewSheetStateful } from "../application-overview-sheet/application-overview-sheet.stateful";
 import { ConfirmDeleteApplicationModalStateful } from "../confirm-delete-application-modal/confirm-delete-application-modal.steteful";
 import { CreateApplicationModalStateful } from "../create-application-modal/create-application-modal.stateful";
+import { EditApplicationModalStateful } from "../edit-application-modal/edit-application-modal.stateful";
 
 type ApplicationsTableProps = {
   statusGroup: ApplicationStatusGroupEnum;
@@ -195,7 +196,11 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Editar</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleEditAplication(application)}
+                >
+                  Editar
+                </DropdownMenuItem>
 
                 <DropdownMenuItem
                   variant="destructive"
@@ -259,6 +264,10 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
       : selectedStatus?.filter((c) => c !== status);
 
     setParam(appQueryParams.selectedStatus, newSelectedStatus.join(","));
+  };
+
+  const handleEditAplication = (application: Application) => {
+    setParam(appQueryParams.editApplication, application.id);
   };
 
   const clearSelectedStatus = () => {
@@ -562,6 +571,7 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
 
       <ConfirmDeleteApplicationModalStateful />
       <ApplicationOverviewSheetStateful />
+      <EditApplicationModalStateful />
     </div>
   );
 };
