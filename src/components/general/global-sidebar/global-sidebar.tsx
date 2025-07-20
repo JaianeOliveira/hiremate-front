@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
 } from "@radix-ui/react-dropdown-menu";
 
-import { ChartPie, FileText, LogOut, Send, User2 } from "lucide-react";
+import { ChartPie, LogOut, Send, User2 } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { UserInfoStateful } from "../user-info/user-info.stateful";
@@ -75,7 +75,7 @@ export async function GlobalSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel className="text-blue-500 font-semibold">
             Currículo
           </SidebarGroupLabel>
@@ -96,7 +96,7 @@ export async function GlobalSidebar() {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
 
       <SidebarFooter>
