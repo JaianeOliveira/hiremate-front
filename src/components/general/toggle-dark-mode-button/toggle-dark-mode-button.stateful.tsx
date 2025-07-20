@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -33,24 +34,18 @@ export const ToggleDarkModeButtonStateful = () => {
   }, []);
 
   return (
-    <button
-      type="button"
+    <Button
       onClick={toggleDarkMode}
       className="
-        outline outline-zinc-800 dark:outline-zinc-100
-        p-2 rounded-full
-        fixed right-8 bottom-8
-        bg-white dark:bg-zinc-900
-        shadow-lg
-        transition-colors
-        hover:bg-zinc-100 dark:hover:bg-zinc-800
+       fixed right-8 bottom-8
+       aspect-square
       "
     >
       {isDark ? (
-        <Sun strokeWidth={2} size={18} />
+        <Sun strokeWidth={2} size={18} className="stroke-neutral-100" />
       ) : (
-        <Moon strokeWidth={1.2} size={18} />
+        <Moon strokeWidth={1.5} size={18} className="stroke-neutral-100" />
       )}
-    </button>
+    </Button>
   );
 };

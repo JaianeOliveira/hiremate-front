@@ -13,6 +13,10 @@
 }
 
 @theme inline {
+  --font-sans: var(--font-sourceSans3);
+  --font-heading: var(--font-outfit);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-montserrat-sans);
@@ -86,12 +90,12 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.623 0.214 259.815);
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(20.5% 0 0);
 }
 
 .dark {
   --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  --foreground: oklch(97% 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -125,16 +129,18 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 scroll-smooth;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 
-  html {
-    font-size: 14px;
-  }
-  body {
-    font-family: Montserrat, Arial, Helvetica, sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
   }
 }

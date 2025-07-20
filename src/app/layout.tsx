@@ -1,14 +1,19 @@
 import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
 import "dayjs/locale/pt-br";
 import type { Metadata } from "next";
-import { Geist_Mono, Montserrat } from "next/font/google";
+import { Geist_Mono, Outfit, Source_Sans_3 } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const montserratSans = Montserrat({
-  variable: "--font-montserrat-sans",
+const outfitFont = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+});
+
+const sourceSans3 = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-sourceSans3",
 });
 
 const geistMono = Geist_Mono({
@@ -29,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${montserratSans.variable} ${geistMono.variable} antialiased`}
+        className={`${outfitFont.variable} ${sourceSans3.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           {children}
