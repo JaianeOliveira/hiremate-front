@@ -229,7 +229,7 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
     limit: 10,
     page: 1,
     total: 0,
-    total_pages: 0,
+    total_pages: 1,
   });
 
   const selectedCompanies =
@@ -293,8 +293,8 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
           : ApplicationStatusGroup[statusGroup],
       },
     ],
-    queryFn: () =>
-      listApplicationsService({
+    queryFn: async () => {
+      const data = await listApplicationsService({
         filters: {
           company: selectedCompanies,
           isTalentPool: Boolean(
@@ -305,7 +305,12 @@ export const ApplicationsTable = ({ statusGroup }: ApplicationsTableProps) => {
             : ApplicationStatusGroup[statusGroup],
         },
         pagination,
-      }),
+      });
+
+      setPagination(data.data.pagination);
+
+      return data;
+    },
   });
 
   useEffect(() => {

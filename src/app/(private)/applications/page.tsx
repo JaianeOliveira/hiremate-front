@@ -1,5 +1,6 @@
 "use client";
 
+import { ApplicationsList } from "@/components/general/applications-list/applications-list";
 import { ApplicationsTable } from "@/components/general/applications-table/applications-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,6 +13,14 @@ export default function ApplicationsPage() {
   const [statusGroup, setStatusGroup] = useState<ApplicationStatusGroupEnum>(
     ApplicationStatusGroupEnum.RUNNING
   );
+
+  const renderPageContent = (statusGroup: ApplicationStatusGroupEnum) => {
+    return isMobile ? (
+      <ApplicationsList statusGroup={statusGroup} />
+    ) : (
+      <ApplicationsTable statusGroup={statusGroup} />
+    );
+  };
 
   return (
     <div
@@ -49,16 +58,16 @@ export default function ApplicationsPage() {
           value={ApplicationStatusGroupEnum.RUNNING}
           className="flex-1 flex flex-col gap-2 overflow-auto"
         >
-          <ApplicationsTable statusGroup={statusGroup} />
+          {renderPageContent(statusGroup)}
         </TabsContent>
         <TabsContent value={ApplicationStatusGroupEnum.REJECTED}>
-          <ApplicationsTable statusGroup={statusGroup} />
+          {renderPageContent(statusGroup)}
         </TabsContent>
         <TabsContent value={ApplicationStatusGroupEnum.ARCHIVED}>
-          <ApplicationsTable statusGroup={statusGroup} />
+          {renderPageContent(statusGroup)}
         </TabsContent>
         <TabsContent value={ApplicationStatusGroupEnum.TALENT_POOL}>
-          <ApplicationsTable statusGroup={statusGroup} />
+          {renderPageContent(statusGroup)}
         </TabsContent>
       </Tabs>
     </div>
