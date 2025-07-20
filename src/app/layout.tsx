@@ -1,4 +1,5 @@
 import { ToggleDarkModeButtonStateful } from "@/components/general/toggle-dark-mode-button/toggle-dark-mode-button.stateful";
+import { Analytics } from "@vercel/analytics/next";
 import "dayjs/locale/pt-br";
 import type { Metadata } from "next";
 import { Geist_Mono, Outfit, Source_Sans_3 } from "next/font/google";
@@ -41,6 +42,7 @@ export default function RootLayout({
           <Toaster duration={1000} position="top-right" />
           <ToggleDarkModeButtonStateful />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
