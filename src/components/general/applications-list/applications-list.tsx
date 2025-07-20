@@ -271,10 +271,7 @@ export const ApplicationsList = ({ statusGroup }: ApplicationsListProps) => {
       ) : filteredApps.length > 0 ? (
         <div className="flex flex-col gap-4 py-4 flex-1">
           {filteredApps.map((application) => (
-            <Card
-              key={application.id}
-              onClick={() => handleViewApplicationDetails(application)}
-            >
+            <Card key={application.id}>
               <CardHeader>
                 <CardTitle>{application.jobTitle}</CardTitle>
                 <CardDescription>{application.companyName}</CardDescription>
